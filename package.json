@@ -1,0 +1,22 @@
+{
+  "name": "rollup-plugin-run",
+  "version": "1.0.0",
+  "description": "Run your bundle after you've built it",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rollup/rollup-plugin-run.git"
+  },
+  "keywords": [
+    "rollup"
+  ],
+  "author": "Rich Harris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rollup/rollup-plugin-run/issues"
+  },
+  "homepage": "https://github.com/rollup/rollup-plugin-run#readme"
+}
