@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-run",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run your bundle after you've built it",
   "main": "index.js",
   "scripts": {
