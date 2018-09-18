@@ -9,15 +9,21 @@ module.exports = () => {
 		name: 'run',
 
 		options(opts) {
-			if (Array.isArray(opts.input)) {
-				if (opts.input.length > 1) {
-					throw new Error(`rollup-plugin-run only works with a single entry point`);
-				} else {
-					input = opts.input[0];
-				}
-			} else {
-				input = opts.input;
+			let inputs = opts.input;
+
+			if (typeof inputs === "string") {
+				inputs = [inputs];
 			}
+
+			if (typeof inputs === "object") {
+				inputs = Object.values(inputs);
+			}
+
+			if (inputs.length > 1) {
+				throw new Error(`rollup-plugin-run only works with a single entry point`);
+			}
+
+			input = path.resolve(inputs[0]);
 		},
 
 		generateBundle(outputOptions, bundle, isWrite) {
@@ -27,17 +33,24 @@ module.exports = () => {
 
 			const dir = outputOptions.dir || path.dirname(outputOptions.file);
 
-			const basename = path.basename(input);
-			const chunk = bundle[basename];
+			let dest;
 
-			if (!chunk) {
+			for (const fileName in bundle) {
+				const chunk = bundle[fileName];
+				if (!chunk.isEntry) continue;
+
+				if (chunk.modules[input]) {
+					dest = path.join(dir, fileName);
+					break;
+				}
+			}
+
+			if (!dest) {
 				this.error(`rollup-plugin-run could not find output chunk`);
 			}
 
-			const mod = path.join(dir, chunk.fileName);
-
 			if (proc) proc.kill();
-			proc = child_process.fork(mod);
+			proc = child_process.fork(dest);
 		}
 	}
 };
