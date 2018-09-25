@@ -37,6 +37,11 @@ module.exports = () => {
 
 			for (const fileName in bundle) {
 				const chunk = bundle[fileName];
+
+				if (!('isEntry' in chunk)) {
+					this.error(`rollup-plugin-run requires Rollup 0.65 or higher`);
+				}
+
 				if (!chunk.isEntry) continue;
 
 				if (chunk.modules[input]) {
@@ -45,12 +50,12 @@ module.exports = () => {
 				}
 			}
 
-			if (!dest) {
+			if (dest) {
+				if (proc) proc.kill();
+				proc = child_process.fork(dest);
+			} else {
 				this.error(`rollup-plugin-run could not find output chunk`);
 			}
-
-			if (proc) proc.kill();
-			proc = child_process.fork(dest);
 		}
 	}
 };
