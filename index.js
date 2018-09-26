@@ -1,9 +1,13 @@
 const path = require('path');
 const child_process = require('child_process');
 
-module.exports = () => {
+module.exports = (opts = {}) => {
 	let input;
 	let proc;
+
+	const args = opts.args || [];
+	const forkOptions = opts.options || opts;
+	delete forkOptions.args;
 
 	return {
 		name: 'run',
@@ -52,7 +56,7 @@ module.exports = () => {
 
 			if (dest) {
 				if (proc) proc.kill();
-				proc = child_process.fork(dest);
+				proc = child_process.fork(dest, args, forkOptions);
 			} else {
 				this.error(`rollup-plugin-run could not find output chunk`);
 			}

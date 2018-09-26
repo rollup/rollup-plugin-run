@@ -42,6 +42,28 @@ export default {
 
 Note that we're using the `cjs` format, because we're running the app in Node.
 
+The app is run in a child process using [child_process.fork(...)](https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options). You can pass through options such as `env` and `execArgv`. For example, to debug with sourcemaps using [source-map-support](https://www.npmjs.com/package/source-map-support) you could do this:
+
+```diff
+// rollup.config.js
+import run from 'rollup-plugin-run';
+
+export default {
+  input: 'src/index.js',
+  output: {
+    file: 'dist/index.js',
+    format: 'cjs',
++    sourcemap: true
+  },
+  plugins: [
+-    run()
++    run({
++      execArgv: ['-r', 'source-map-support/register']
++    })
+  ]
+};
+```
+
 ## When
 
 By default, always. Since this feature is intended for development use, you may prefer to only include it when Rollup is being run in watch mode:
