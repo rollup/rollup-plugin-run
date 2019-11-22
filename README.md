@@ -1,3 +1,7 @@
+# Moved
+
+This module has moved and is now available at [@rollup/plugin-run](https://github.com/rollup/plugins). Please update your dependencies. This repository is no longer maintained.
+
 # rollup-plugin-run
 
 Run your bundles in Node once they're built.
